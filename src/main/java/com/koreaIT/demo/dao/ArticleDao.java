@@ -1,63 +1,21 @@
 package com.koreaIT.demo.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
+import org.apache.ibatis.annotations.Mapper;
 
 import com.koreaIT.demo.vo.Article;
 
-@Component
-public class ArticleDao {
+@Mapper
+public interface ArticleDao {
+	 
+	public Article writeArticle(String title, String body);
 	
-	private List<Article> articles;
-	private int lastArticleId;
+	public List<Article> getArticles();
 	
-	public ArticleDao() {
-		this.articles = new ArrayList<>();
-		this.lastArticleId = 0;
-		
-		makeTestData();
-	}
+	public Article getArticleById(int id);
 	
-	public void makeTestData() {
-		for (int i = 1; i <= 10; i++) {
-			String title = "제목" + i;
-			String body = "내용" + i;
-			
-			writeArticle(title, body);
-		}
-	}
+	public void modifyArticle(Article article, String title, String body);
 	
-	public Article writeArticle(String title, String body) {
-		this.lastArticleId++;
-		
-		Article article = new Article(lastArticleId, title, body);
-		
-		this.articles.add(article);
-		
-		return article;
-	}
-	
-	public List<Article> getArticles() {
-		return this.articles;
-	}
-	
-	public Article getArticleById(int id) {
-		for (Article article : this.articles) {
-			if (article.getId() == id) {
-				return article;
-			}
-		}
-		return null;
-	}
-	
-	public void modifyArticle(Article article, String title, String body) {
-		article.setTitle(title);
-		article.setBody(body);
-	}
-	
-	public void deleteArticle(Article article) {
-		this.articles.remove(article);
-	}
+	public void deleteArticle(Article article);
 }
