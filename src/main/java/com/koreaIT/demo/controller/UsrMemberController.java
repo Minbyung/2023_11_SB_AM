@@ -9,6 +9,8 @@ import com.koreaIT.demo.util.Util;
 import com.koreaIT.demo.vo.Member;
 import com.koreaIT.demo.vo.ResultData;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class UsrMemberController {
 	
@@ -20,7 +22,7 @@ public class UsrMemberController {
 	
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
-	public ResultData<Member> doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNum, String email) {
+	public ResultData<Member> doJoin(HttpSession session, String loginId, String loginPw, String name, String nickname, String cellphoneNum, String email) {
 		
 		if (Util.empty(loginId)) {
 			return ResultData.from("F-1", "아이디를 입력해주세요");
@@ -52,5 +54,48 @@ public class UsrMemberController {
 		int id = memberService.getLastInsertId();
 		
 		return ResultData.from("S-1", "회원 가입 성공", memberService.getMemberById(id));
+	}
+	
+	@RequestMapping("/usr/member/doLogin")
+	@ResponseBody
+	public ResultData doLogin(HttpSession session, String loginId, String loginPw) {
+		
+		if (session.getAttribute("loginedMemberId") != null) {
+			return ResultData.from("F-1", "로그아웃 후 이용해주세요");
+		}
+		
+		if (Util.empty(loginId)) {
+			return ResultData.from("F-2", "아이디를 입력해주세요");
+		}
+		if (Util.empty(loginPw)) {
+			return ResultData.from("F-3", "비밀번호를 입력해주세요");
+		}
+		
+		Member member = memberService.getMemberByLoginId(loginId);
+		
+		if (member == null) {
+			return ResultData.from("F-4", Util.f("%s은(는) 존재하지 않는 아이디입니다", loginId));
+		}
+		
+		if (member.getLoginPw().equals(loginPw) == false) {
+			return ResultData.from("F-5", "비밀번호를 확인해주세요");
+		}
+		
+		session.setAttribute("loginedMemberId", member.getId());
+		
+		return ResultData.from("S-1", Util.f("%s 회원님 환영합니다~", member.getNickname()));
+	}
+	
+	@RequestMapping("/usr/member/doLogout")
+	@ResponseBody
+	public ResultData doLogout(HttpSession session) {
+		
+		if (session.getAttribute("loginedMemberId") == null) {
+			return ResultData.from("F-1", "로그인 후 이용해주세요");
+		}
+		
+		session.removeAttribute("loginedMemberId");
+		
+		return ResultData.from("S-1", "정상적으로 로그아웃 되었습니다");
 	}
 }
