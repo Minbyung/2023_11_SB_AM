@@ -14,7 +14,4 @@ public class Util {
 		return String.format(format, args);
 	}
 	
-//	public static String f() {
-//		
-//	}
 }
