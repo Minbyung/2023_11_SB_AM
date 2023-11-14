@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.koreaIT.demo.dao.ArticleDao;
-import com.koreaIT.demo.util.Util;
 import com.koreaIT.demo.vo.Article;
-import com.koreaIT.demo.vo.ResultData;
 
 @Service
 public class ArticleService {
