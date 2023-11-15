@@ -10,7 +10,7 @@
 		<div class="container mx-auto px-3">
 			<div class="table-box-type">
 				<table>
-					<thead>
+					<thead class=" bg-gray-300">
 						<tr>
 							<th>번호</th>
 							<th>작성일</th>
@@ -22,9 +22,9 @@
 						<c:forEach var="article" items="${articles }">
 							<tr>
 								<td>${article.id }</td>
-								<td>${article.regDate }</td>
+								<td>${article.regDate.substring(2, 16) }</td>
 								<td class="hover:underline"><a href="detail?id=${article.id }">${article.title }</a></td>
-								<td>${article.memberId }</td>
+								<td>${article.writerName }</td>
 							</tr>
 						</c:forEach>
 					</tbody>

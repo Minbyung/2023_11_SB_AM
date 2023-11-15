@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="/resource/common.css" />
 </head>
 <body>
-	<div class="h-20 flex container mx-auto text-4xl">
+	<div class="bg-blue-300 h-20 flex container mx-auto text-4xl text-white">
 		<div><a class="h-full px-3 flex items-center" href="/"><span>로고</span></a></div>
 		<div class="flex-grow"></div>
 		<ul class="flex">

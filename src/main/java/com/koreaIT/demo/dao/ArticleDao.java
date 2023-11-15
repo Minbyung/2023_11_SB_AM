@@ -24,9 +24,11 @@ public interface ArticleDao {
 	public void writeArticle(int memberId, String title, String body);
 	
 	@Select("""
-			SELECT *
-				FROM article
-				ORDER BY id DESC
+			SELECT A.*, M.name AS writerName
+				FROM article AS A
+				INNER JOIN `member` AS M
+				ON A.memberId = M.id
+				ORDER BY A.id DESC
 			""")
 	public List<Article> getArticles();
 	
