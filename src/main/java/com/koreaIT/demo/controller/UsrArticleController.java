@@ -11,7 +11,9 @@ import com.koreaIT.demo.service.ArticleService;
 import com.koreaIT.demo.util.Util;
 import com.koreaIT.demo.vo.Article;
 import com.koreaIT.demo.vo.ResultData;
+import com.koreaIT.demo.vo.Rq;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -57,18 +59,14 @@ public class UsrArticleController {
 	}
 	
 	@RequestMapping("/usr/article/detail")
-	public String showDetail(HttpSession session, Model model, int id) {
+	public String showDetail(HttpServletRequest req, Model model, int id) {
 		
-		int loginedMemberId = 0;
-		
-		if (session.getAttribute("loginedMemberId") != null) {
-			loginedMemberId = (int) session.getAttribute("loginedMemberId");
-		}
+		Rq rq = new Rq(req);
 		
 		Article article = articleService.forPrintArticle(id);
 		
 		model.addAttribute("article", article);
-		model.addAttribute("loginedMemberId", loginedMemberId);
+		model.addAttribute("loginedMemberId", rq.getLoginedMemberId());
 		
 		return "usr/article/detail";
 	}
@@ -94,21 +92,27 @@ public class UsrArticleController {
 	
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
-	public ResultData doDelete(HttpSession session, int id) {
+	public String doDelete(HttpServletRequest req, int id) {
+		
+		Rq rq = new Rq(req);
+		
+		if (rq.getLoginedMemberId() == 0) {
+			return Util.jsHistoryBack("로그인 후 이용해주세요");
+		}
 		
 		Article article = articleService.getArticleById(id);
 		
 		if (article == null) {
-			return ResultData.from("F-1", Util.f("%d번 게시물은 존재하지 않습니다", id));
+			return Util.jsHistoryBack(Util.f("%d번 게시물은 존재하지 않습니다", id));
 		}
 		
-		if ((int) session.getAttribute("loginedMemberId") != article.getMemberId()) {
-			return ResultData.from("F-A", "해당 게시물에 대한 권한이 없습니다");
+		if (rq.getLoginedMemberId() != article.getMemberId()) {
+			return Util.jsHistoryBack("해당 게시물에 대한 권한이 없습니다");
 		}
 		
 		articleService.deleteArticle(id);
 		
-		return ResultData.from("S-1", Util.f("%d번 게시물을 삭제했습니다", id));
+		return Util.jsReplace(Util.f("%d번 게시물을 삭제했습니다", id), "list");
 	}
 	
 }
