@@ -56,17 +56,21 @@ public class UsrArticleController {
 		return "usr/article/list";
 	}
 	
-	@RequestMapping("/usr/article/showDetail")
-	@ResponseBody
-	public ResultData<Article> showDetail(int id) {
+	@RequestMapping("/usr/article/detail")
+	public String showDetail(HttpSession session, Model model, int id) {
 		
-		Article article = articleService.getArticleById(id);
+		int loginedMemberId = 0;
 		
-		if (article == null) {
-			return ResultData.from("F-1", Util.f("%d번 게시물은 존재하지 않습니다", id));
+		if (session.getAttribute("loginedMemberId") != null) {
+			loginedMemberId = (int) session.getAttribute("loginedMemberId");
 		}
 		
-		return ResultData.from("S-1", Util.f("%d번 게시물", id), article);
+		Article article = articleService.forPrintArticle(id);
+		
+		model.addAttribute("article", article);
+		model.addAttribute("loginedMemberId", loginedMemberId);
+		
+		return "usr/article/detail";
 	}
 	
 	@RequestMapping("/usr/article/doModify")
