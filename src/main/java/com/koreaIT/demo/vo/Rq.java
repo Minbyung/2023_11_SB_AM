@@ -13,12 +13,14 @@ public class Rq {
 	
 	@Getter
 	private int loginedMemberId;
+	HttpServletRequest req;
 	HttpServletResponse resp;
 	HttpSession session;
 	
 	public Rq(HttpServletRequest req, HttpServletResponse response) {
 		
 		this.resp = response;
+		this.req = req;
 		
 		this.session = req.getSession();
 		
@@ -41,6 +43,13 @@ public class Rq {
 		}
 	}
 
+	public String jsReturnOnView(String msg) {
+		
+		req.setAttribute("msg", msg);
+		
+		return "usr/common/js";
+	}
+	
 	public void login(Member member) {
 		this.session.setAttribute("loginedMemberId", member.getId());
 	}
