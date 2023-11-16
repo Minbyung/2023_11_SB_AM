@@ -8,8 +8,9 @@ import com.koreaIT.demo.service.MemberService;
 import com.koreaIT.demo.util.Util;
 import com.koreaIT.demo.vo.Member;
 import com.koreaIT.demo.vo.ResultData;
+import com.koreaIT.demo.vo.Rq;
 
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class UsrMemberController {
@@ -22,9 +23,11 @@ public class UsrMemberController {
 	
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
-	public ResultData<Member> doJoin(HttpSession session, String loginId, String loginPw, String name, String nickname, String cellphoneNum, String email) {
+	public ResultData<Member> doJoin(HttpServletRequest req, String loginId, String loginPw, String name, String nickname, String cellphoneNum, String email) {
 		
-		if (session.getAttribute("loginedMemberId") != null) {
+		Rq rq = (Rq) req.getAttribute("rq");
+		
+		if (rq.getLoginedMemberId() != 0) {
 			return ResultData.from("F-L", "로그아웃 후 이용해주세요");
 		}
 		
@@ -67,9 +70,11 @@ public class UsrMemberController {
 	
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
-	public String doLogin(HttpSession session, String loginId, String loginPw) {
+	public String doLogin(HttpServletRequest req, String loginId, String loginPw) {
 		
-		if (session.getAttribute("loginedMemberId") != null) {
+		Rq rq = (Rq) req.getAttribute("rq");
+		
+		if (rq.getLoginedMemberId() != 0) {
 			return Util.jsHistoryBack("로그아웃 후 이용해주세요");
 		}
 		
@@ -90,21 +95,19 @@ public class UsrMemberController {
 			return Util.jsHistoryBack("비밀번호를 확인해주세요");
 		}
 		
-		session.setAttribute("loginedMemberId", member.getId());
+		rq.login(member);
 		
 		return Util.jsReplace(Util.f("%s 회원님 환영합니다~", member.getNickname()), "/");
 	}
 	
 	@RequestMapping("/usr/member/doLogout")
 	@ResponseBody
-	public ResultData doLogout(HttpSession session) {
+	public String doLogout(HttpServletRequest req) {
 		
-		if (session.getAttribute("loginedMemberId") == null) {
-			return ResultData.from("F-L", "로그인 후 이용해주세요");
-		}
+		Rq rq = (Rq) req.getAttribute("rq");
 		
-		session.removeAttribute("loginedMemberId");
+		rq.logout();
 		
-		return ResultData.from("S-1", "정상적으로 로그아웃 되었습니다");
+		return Util.jsReplace("정상적으로 로그아웃 되었습니다", "/");
 	}
 }
