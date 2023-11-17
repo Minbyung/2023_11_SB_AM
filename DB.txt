@@ -38,7 +38,7 @@ CREATE TABLE board(
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
-memberId = 2,
+memberId = 1,
 boardId = 1,
 title = '공지1',
 `body` = '공지내용1';
