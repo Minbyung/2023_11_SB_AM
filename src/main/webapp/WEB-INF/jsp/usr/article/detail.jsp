@@ -38,11 +38,10 @@
 			</div>
 			
 			<div class="btns">
-				<button class="btn-text-color" onclick="history.back();">뒤로가기</button>
-				
+				<button class="btn-text-color btn btn-outline mt-3" onclick="history.back();">뒤로가기</button>
 				<c:if test="${loginedMemberId != null && loginedMemberId == article.memberId }">
-					<a class="btn-text-color" href="modify?id=${article.id }">수정</a>
-					<a class="btn-text-color" href="doDelete?id=${article.id }" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</a>
+					<a class="btn-text-color btn btn-outline mt-3" href="modify?id=${article.id }">수정</a>
+					<a class="btn-text-color btn btn-outline mt-3" href="doDelete?id=${article.id }" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</a>
 				</c:if>
 			</div>
 		</div>
