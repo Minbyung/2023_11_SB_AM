@@ -8,6 +8,11 @@
 	
 	<section class="mt-8 text-xl">
 		<div class="container mx-auto px-3">
+		
+			<div class="mb-2 text-base">
+				<div><span>총 : ${articlesCnt }개</span></div>
+			</div>
+		
 			<div class="table-box-type">
 				<table class="table table-lg">
 					<thead class="text-lg">

@@ -11,7 +11,7 @@
 			<form action="doModify" method="post">
 				<input name="id" type="hidden" value="${article.id }"/>
 				<div class="table-box-type">
-					<table>
+					<table class="table table-lg">
 						<tr>
 							<th>번호</th>
 							<td>${article.id }</td>
@@ -30,21 +30,21 @@
 						</tr>
 						<tr>
 							<th>제목</th>
-							<td><input class="w-96 input input-bordered w-full max-w-xs" name="title" type="text" value="${article.title }" placeholder="제목을 입력해주세요" /></td>
+							<td><input class="input input-bordered input-primary w-9/12" name="title" type="text" value="${article.title }" placeholder="제목을 입력해주세요" /></td>
 						</tr>
 						<tr>
 							<th>내용</th>
-							<td><textarea class="w-96 input input-bordered w-full max-w-xs" name="body" placeholder="내용을 입력해주세요">${article.body }</textarea></td>
+							<td><textarea class="textarea textarea-bordered textarea-primary w-9/12" name="body" placeholder="내용을 입력해주세요">${article.body }</textarea></td>
 						</tr>
 						<tr>
-							<td colspan="2"><button class="btn btn-active btn-ghost">수정</button></td>
+							<td class="text-center" colspan="2"><button class="btn-text-color btn btn-wide btn-outline">수정</button></td>
 						</tr>
 					</table>
 				</div>
 			</form>
 			
-			<div class="btns">
-				<button class="btn-text-color btn btn-outline mt-3" onclick="history.back();">뒤로가기</button>
+			<div class="btns mt-2">
+				<button class="btn-text-color btn btn-outline btn-sm" onclick="history.back();">뒤로가기</button>
 			</div>
 		</div>
 	</section>

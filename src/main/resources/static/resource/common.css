@@ -16,19 +16,16 @@ html > body {
 	width: 100%;
 }
 
-.table-box-type > table th, .table-box-type > table td {
-	border: 1px solid black;
-	padding: 10px;
-	text-align: center; 
-}
+/*.table-box-type > table th, .table-box-type > table td {*/
+/*	border: 1px solid black;*/
+/*	padding: 10px;*/
+/*	text-align: center; */
+/*}*/
 
 .btns > .btn-text-color {
 	color:black;
 }
 
 .btns > .btn-text-color:hover {
-	color:firebrick;
-	text-decoration: underline;
+	color:white;
 }
-
-
