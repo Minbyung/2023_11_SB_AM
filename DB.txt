@@ -7,6 +7,7 @@ CREATE TABLE article(
     regDate DATETIME NOT NULL,
     updateDate DATETIME NOT NULL,
     memberId INT UNSIGNED NOT NULL,
+    boardId INT UNSIGNED NOT NULL,
     title VARCHAR(100) NOT NULL,
     `body` TEXT NOT NULL
 );
@@ -26,17 +27,27 @@ CREATE TABLE `member`(
     delDate DATETIME COMMENT '탈퇴 날짜'
 );
 
-INSERT INTO article
-SET regDate = NOW(),
-updateDate = NOW(),
-memberId = 2,
-title = '제목1',
-`body` = '내용1';
+CREATE TABLE board(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    `code` VARCHAR(20) NOT NULL COMMENT 'notice(공지사항), free(자유), ...',
+    `name` VARCHAR(20) NOT NULL COMMENT '게시판 이름'
+);
 
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
 memberId = 2,
+boardId = 1,
+title = '공지1',
+`body` = '공지내용1';
+
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 2,
+boardId = 2,
 title = '제목2',
 `body` = '내용2';
 
@@ -44,6 +55,7 @@ INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
 memberId = 2,
+boardId = 2,
 title = '제목3',
 `body` = '내용3';
 
@@ -69,7 +81,20 @@ nickname = 'user1',
 cellphoneNum = '010-1111-2222',
 email = 'test1@test1.com';
 
+INSERT INTO board
+SET regDate = NOW(),
+updateDate = NOW(),
+`code` = 'notice',
+`name` = '공지사항';
+
+INSERT INTO board
+SET regDate = NOW(),
+updateDate = NOW(),
+`code` = 'free',
+`name` = '자유';
+
 SELECT * FROM article;
 SELECT * FROM `member`;
+SELECT * FROM board;
 
 SELECT LAST_INSERT_ID();
