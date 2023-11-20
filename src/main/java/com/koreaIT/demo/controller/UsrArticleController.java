@@ -34,7 +34,7 @@ public class UsrArticleController {
 	
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
-	public String doWrite(HttpServletRequest req, String title, String body) {
+	public String doWrite(HttpServletRequest req, String title, String body, int boardId) {
 		
 		Rq rq = (Rq) req.getAttribute("rq");
 		
@@ -46,7 +46,7 @@ public class UsrArticleController {
 			return Util.jsHistoryBack("내용을 입력해주세요");
 		}
 		
-		articleService.writeArticle(rq.getLoginedMemberId(), title, body);
+		articleService.writeArticle(rq.getLoginedMemberId(), boardId, title, body);
 		
 		int id = articleService.getLastInsertId();
 		
@@ -54,9 +54,15 @@ public class UsrArticleController {
 	}
 	
 	@RequestMapping("/usr/article/list")
-	public String list(Model model, int boardId) {
+	public String list(HttpServletRequest req, Model model, int boardId) {
+		
+		Rq rq = (Rq) req.getAttribute("rq");
 		
 		Board board = boardService.getBoardById(boardId);
+
+		if (board == null) {
+			return rq.jsReturnOnView("존재하지 않는 게시판입니다");
+		}
 		
 		int articlesCnt = articleService.getArticlesCnt(boardId);
 		
