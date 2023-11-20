@@ -10,22 +10,20 @@ import com.koreaIT.demo.vo.Member;
 import com.koreaIT.demo.vo.ResultData;
 import com.koreaIT.demo.vo.Rq;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 @Controller
 public class UsrMemberController {
 	
 	private MemberService memberService;
+	private Rq rq;
 	
-	UsrMemberController(MemberService memberService) {
+	UsrMemberController(MemberService memberService, Rq rq) {
 		this.memberService = memberService;
+		this.rq = rq;
 	}
 	
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
-	public ResultData<Member> doJoin(HttpServletRequest req, String loginId, String loginPw, String name, String nickname, String cellphoneNum, String email) {
-		
-		Rq rq = (Rq) req.getAttribute("rq");
+	public ResultData<Member> doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNum, String email) {
 		
 		if (rq.getLoginedMemberId() != 0) {
 			return ResultData.from("F-L", "로그아웃 후 이용해주세요");
@@ -70,9 +68,7 @@ public class UsrMemberController {
 	
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
-	public String doLogin(HttpServletRequest req, String loginId, String loginPw) {
-		
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String doLogin(String loginId, String loginPw) {
 		
 		if (rq.getLoginedMemberId() != 0) {
 			return Util.jsHistoryBack("로그아웃 후 이용해주세요");
@@ -102,9 +98,7 @@ public class UsrMemberController {
 	
 	@RequestMapping("/usr/member/doLogout")
 	@ResponseBody
-	public String doLogout(HttpServletRequest req) {
-		
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String doLogout() {
 		
 		rq.logout();
 		
