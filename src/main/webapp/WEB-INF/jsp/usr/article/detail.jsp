@@ -9,7 +9,7 @@
 	<section class="mt-8 text-xl">
 		<div class="container mx-auto px-3">
 			<div class="table-box-type">
-				<table>
+				<table class="table table-lg">
 					<tr>
 						<th>번호</th>
 						<td>${article.id }</td>
@@ -37,11 +37,12 @@
 				</table>
 			</div>
 			
-			<div class="btns">
-				<button class="btn-text-color btn btn-outline mt-3" onclick="history.back();">뒤로가기</button>
+			<div class="btns mt-2">
+				<button class="btn-text-color btn btn-outline btn-sm" onclick="history.back();">뒤로가기</button>
+				
 				<c:if test="${loginedMemberId != null && loginedMemberId == article.memberId }">
-					<a class="btn-text-color btn btn-outline mt-3" href="modify?id=${article.id }">수정</a>
-					<a class="btn-text-color btn btn-outline mt-3" href="doDelete?id=${article.id }" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</a>
+					<a class="btn-text-color btn btn-outline btn-sm" href="modify?id=${article.id }">수정</a>
+					<a class="btn-text-color btn btn-outline btn-sm" href="doDelete?id=${article.id }" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</a>
 				</c:if>
 			</div>
 		</div>
