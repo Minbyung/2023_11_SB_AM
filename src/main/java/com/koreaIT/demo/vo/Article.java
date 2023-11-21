@@ -15,5 +15,7 @@ public class Article {
 	private String title;
 	private String body;
 	
+	private String searchKeyWord;
+	private String searchKeyWordMenu;
 	private String writerName;
 }
