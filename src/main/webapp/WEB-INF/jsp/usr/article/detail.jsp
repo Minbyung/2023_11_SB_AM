@@ -6,29 +6,6 @@
 	
 	<%@ include file="../common/head.jsp" %>
 	
-	<script>
-		const articleDetail_increaseHitCount = function(){
-			$.ajax({
-				url: "doIncreaseHitCount",
-				method: "get",
-				data: {"id": parseInt('${param.id }')},
-				dataType: "json",
-				success: function(data) {
-					$("#increaseHitCount").html(data.data);
-				},
-				error: function(xhr, status, error) {
-					console.error("ERROR : " + status + " - " + error);
-				}
-			})
-		}
-		
-		$(function(){
-			articleDetail_increaseHitCount();
-			
-// 			setTimeout(articleDetail_increaseHitCount, 3000);
-		})
-	</script>
-	
 	<section class="mt-8 text-xl">
 		<div class="container mx-auto px-3">
 			<div class="table-box-type">
@@ -47,7 +24,7 @@
 					</tr>
 					<tr>
 						<th>조회수</th>
-						<td><span id="increaseHitCount">${article.hitCount }</span></td>
+						<td>${article.hitCount }</td>
 					</tr>
 					<tr>
 						<th>작성자</th>

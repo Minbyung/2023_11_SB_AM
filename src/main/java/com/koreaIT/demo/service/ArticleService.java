@@ -60,8 +60,4 @@ public class ArticleService {
 		
 		return ResultData.from("S-1", "조회수 증가", affectedRowsCnt);
 	}
-
-	public int getArticleHitCount(int id) {
-		return articleDao.getArticleHitCount(id);
-	}
 }

@@ -86,13 +86,6 @@ public interface ArticleDao {
 	public int increaseHitCount(int id);
 	
 	@Select("""
-			SELECT hitCount
-				FROM article
-				WHERE id = #{id}
-			""")
-	public int getArticleHitCount(int id);
-	
-	@Select("""
 			SELECT A.*, M.name AS writerName
 				FROM article AS A
 				INNER JOIN `member` AS M
