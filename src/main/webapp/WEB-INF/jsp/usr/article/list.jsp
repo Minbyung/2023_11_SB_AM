@@ -28,6 +28,16 @@
 		
 			<div class="table-box-type">
 				<table class="table table-lg">
+				
+					<colgroup>
+						<col width="60" />
+						<col width="200" />
+						<col />
+						<col width="120" />
+						<col width="60" />
+						<col width="40" />
+					</colgroup>
+					
 					<thead class="text-lg">
 						<tr>
 							<th>번호</th>
@@ -35,6 +45,7 @@
 							<th>제목</th>
 							<th>작성자</th>
 							<th>조회수</th>
+							<th>추천수</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -45,6 +56,7 @@
 								<td class="hover:underline"><a href="detail?id=${article.id }">${article.title }</a></td>
 								<td>${article.writerName }</td>
 								<td>${article.hitCount }</td>
+								<td>${article.point }</td>
 							</tr>
 						</c:forEach>
 					</tbody>

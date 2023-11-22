@@ -31,6 +31,18 @@
 						<td>${article.writerName }</td>
 					</tr>
 					<tr>
+						<th>추천</th>
+						<td>
+							<c:if test="${rq.getLoginedMemberId() == 0 }">
+								<span>${article.point }</span>
+							</c:if>
+							<c:if test="${rq.getLoginedMemberId() != 0 }">
+								<button class="mr-8 btn-text-color btn btn-outline btn-xs">좋아요👍</button>
+								<span>좋아요 : ${article.point }개</span>
+							</c:if>
+						</td>
+					</tr>
+					<tr>
 						<th>제목</th>
 						<td>${article.title }</td>
 					</tr>

@@ -51,10 +51,15 @@ public interface ArticleDao {
 	
 	@Select("""
 			<script>
-			SELECT A.*, M.name AS writerName
+			SELECT A.*
+				   , M.name AS writerName
+				   , IFNULL(SUM(R.point), 0) AS `point`
 				FROM article AS A
 				INNER JOIN `member` AS M
 				ON A.memberId = M.id
+				LEFT JOIN recommendPoint AS R
+				ON relTypeCode = 'article'
+				AND A.id = R.relId
 				WHERE A.boardId = #{boardId}
 				<if test="searchKeyword != ''">
 					<choose>
@@ -72,6 +77,7 @@ public interface ArticleDao {
 						</otherwise>
 					</choose>
 				</if>
+				GROUP BY A.id
 				ORDER BY A.id DESC
 				LIMIT #{limitStart}, #{itemsInAPage}
 			</script>
@@ -86,11 +92,17 @@ public interface ArticleDao {
 	public void increaseHitCount(int id);
 	
 	@Select("""
-			SELECT A.*, M.name AS writerName
+			SELECT A.*
+				   , M.name AS writerName
+				   , IFNULL(SUM(R.point), 0) AS `point`
 				FROM article AS A
 				INNER JOIN `member` AS M
 				ON A.memberId = M.id
+				LEFT JOIN recommendPoint AS R
+				ON relTypeCode = 'article'
+				AND A.id = R.relId
 				WHERE A.id = #{id}
+				GROUP BY A.id
 			""")
 	public Article forPrintArticle(int id);
 	
