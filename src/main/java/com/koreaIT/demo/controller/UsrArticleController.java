@@ -13,8 +13,11 @@ import com.koreaIT.demo.service.BoardService;
 import com.koreaIT.demo.util.Util;
 import com.koreaIT.demo.vo.Article;
 import com.koreaIT.demo.vo.Board;
-import com.koreaIT.demo.vo.ResultData;
 import com.koreaIT.demo.vo.Rq;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class UsrArticleController {
@@ -89,12 +92,33 @@ public class UsrArticleController {
 	}
 	
 	@RequestMapping("/usr/article/detail")
-	public String detail(Model model, int id) {
+	public String detail(HttpServletRequest req, HttpServletResponse resp, Model model, int id) {
 		
-		ResultData<Integer> increaseHitCountRd = articleService.increaseHitCount(id);
+		Cookie oldCookie = null;
+		Cookie[] cookies = req.getCookies();
 		
-		if (increaseHitCountRd.isFail()) {
-			return rq.jsReturnOnView(increaseHitCountRd.getMsg());
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("hitCount")) {
+					oldCookie = cookie;
+				}
+			}
+		}
+		
+		if (oldCookie != null) {
+			if (oldCookie.getValue().contains("[" + id + "]") == false) {
+				articleService.increaseHitCount(id);
+				oldCookie.setValue(oldCookie.getValue() + "_[" + id + "]");
+				oldCookie.setPath("/");
+				oldCookie.setMaxAge(5);
+				resp.addCookie(oldCookie);
+			}
+		} else {
+			articleService.increaseHitCount(id);
+			Cookie newCookie = new Cookie("hitCount", "[" + id + "]"); 
+			newCookie.setPath("/");
+			newCookie.setMaxAge(5);
+			resp.addCookie(newCookie);
 		}
 		
 		Article article = articleService.forPrintArticle(id);
