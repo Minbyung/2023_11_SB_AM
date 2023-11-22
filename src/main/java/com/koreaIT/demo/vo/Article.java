@@ -14,8 +14,8 @@ public class Article {
 	private int memberId;
 	private String title;
 	private String body;
+	int hitCount;
 	
-	private String searchKeyWord;
-	private String searchKeyWordMenu;
+
 	private String writerName;
 }

@@ -78,6 +78,20 @@ public interface ArticleDao {
 			""")
 	public List<Article> getArticles(int boardId, String searchKeywordType, String searchKeyword, int limitStart, int itemsInAPage);
 	
+	@Update("""
+			UPDATE article
+				SET hitCount = hitCount + 1
+				WHERE id = #{id}
+			""")
+	public int increaseHitCount(int id);
+	
+	@Select("""
+			SELECT hitCount
+				FROM article
+				WHERE id = #{id}
+			""")
+	public int getArticleHitCount(int id);
+	
 	@Select("""
 			SELECT A.*, M.name AS writerName
 				FROM article AS A
