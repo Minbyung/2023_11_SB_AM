@@ -57,7 +57,7 @@
 	</script>
 	
 	<section class="mt-8 text-xl">
-		<div class="container mx-auto px-3">
+		<div class="container mx-auto px-3 pb-8 border-bottom-line">
 			<div class="table-box-type">
 				<table class="table table-lg">
 					<tr>
@@ -111,6 +111,22 @@
 					<a class="btn-text-color btn btn-outline btn-sm" href="doDelete?id=${article.id }" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</a>
 				</c:if>
 			</div>
+		</div>
+	</section>
+	
+	<section class="my-5 text-base">
+		<div class="container mx-auto px-3">
+			<h2>댓글</h2>
+			
+			<form action="../reply/doWrite" method="post" onsubmit="">
+				<input name="relTypeCode" type="hidden" value="article" />
+				<input name="relId" type="hidden" value="${article.id }" />
+				<div class="mt-4 border border-gray-400 rounded-lg p-4">
+					<div class="mb-2"><span>닉네임</span></div>
+					<textarea class="textarea textarea-bordered w-full" name="body" placeholder="댓글을 입력해보세요"></textarea>
+					<div class="flex justify-end"><button class="btn-text-color btn btn-outline btn-sm">작성</button></div>
+				</div>
+			</form>
 		</div>
 	</section>
 	
