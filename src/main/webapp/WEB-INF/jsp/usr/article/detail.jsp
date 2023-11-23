@@ -6,6 +6,73 @@
 	
 	<%@ include file="../common/head.jsp" %>
 	
+	<script>
+		$(document).ready(function(){
+			getRecommendPoint();
+			
+			$('#recommendBtn').click(function(){
+				
+				let recommendBtn = $('#recommendBtn');
+				
+				if (recommendBtn.hasClass('btn-active')) {
+					$.ajax({
+						url: "../recommendPoint/deleteRecommendPoint",
+						method: "get",
+						data: {
+								"relTypeCode" : "article",
+								"relId" : ${article.id }
+							},
+						dataType: "text",
+						success: function(data) {
+							console.log(data);
+						},
+						error: function(xhr, status, error) {
+							console.error("ERROR : " + status + " - " + error);
+						}
+					})
+				} else {
+					$.ajax({
+						url: "../recommendPoint/insertRecommendPoint",
+						method: "get",
+						data: {
+								"relTypeCode" : "article",
+								"relId" : ${article.id }
+							},
+						dataType: "text",
+						success: function(data) {
+							console.log(data);
+						},
+						error: function(xhr, status, error) {
+							console.error("ERROR : " + status + " - " + error);
+						}
+					})
+				}
+				
+				location.reload();
+			})
+		})
+		
+		const getRecommendPoint = function(){
+				$.ajax({
+					url: "../recommendPoint/getRecommendPoint",
+					method: "get",
+					data: {
+							"relTypeCode" : "article",
+							"relId" : ${article.id }
+						},
+					dataType: "json",
+					success: function(data) {
+						if (data.success) {
+							$('#recommendBtn').addClass('btn-active');
+						}
+					},
+					error: function(xhr, status, error) {
+						console.error("ERROR : " + status + " - " + error);
+					}
+				})
+			}
+	</script>
+	
 	<section class="mt-8 text-xl">
 		<div class="container mx-auto px-3">
 			<div class="table-box-type">
@@ -37,7 +104,7 @@
 								<span>${article.point }</span>
 							</c:if>
 							<c:if test="${rq.getLoginedMemberId() != 0 }">
-								<button class="mr-8 btn-text-color btn btn-outline btn-xs">좋아요👍</button>
+								<button id="recommendBtn" class="mr-8 btn-text-color btn btn-outline btn-xs">좋아요👍</button>
 								<span>좋아요 : ${article.point }개</span>
 							</c:if>
 						</td>
