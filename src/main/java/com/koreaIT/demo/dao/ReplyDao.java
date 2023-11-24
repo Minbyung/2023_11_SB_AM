@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.koreaIT.demo.vo.Reply;
 
@@ -35,7 +36,16 @@ public interface ReplyDao {
 				AND R.relId = #{relId}
 			""")
 	List<Reply> getReplies(String relTypeCode, int relId);
-
+	
+	@Select("""
+			SELECT R.*, M.nickname AS writerName
+				FROM reply AS R
+				INNER JOIN `member` AS M
+				ON R.memberId = M.id
+				WHERE R.id = #{id}
+			""")
+	Reply forPrintReply(int id);
+	
 	@Select("""
 			SELECT *
 				FROM reply
@@ -43,10 +53,17 @@ public interface ReplyDao {
 			""")
 	Reply getReplyById(int id);
 
+	@Update("""
+			UPDATE reply
+				SET updateDate = NOW()
+					, `body` = #{body}
+				WHERE id = #{id}
+			""")
+	void modifyReply(int id, String body);
+	
 	@Delete("""
 			DELETE FROM reply
 				WHERE id = #{id}
 			""")
 	void deleteReply(int id);
-	
 }

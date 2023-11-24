@@ -23,7 +23,7 @@
 						},
 					dataType: "text",
 					success: function(data) {
-						console.log(data);
+						
 					},
 					error: function(xhr, status, error) {
 						console.error("ERROR : " + status + " - " + error);
@@ -126,14 +126,68 @@
 			
 			form.submit();
 		}
+		
+		let originalForm = null;
+		let originalId = null;
+		
+		const replyModify_getForm = function(replyId, i){
+			
+			if (originalForm != null) {
+				replyModify_cancle(originalId);
+			}
+			
+			$.ajax({
+				url: "../reply/getReplyContent",
+				method: "get",
+				data: {
+						"id" : replyId
+					},
+				dataType: "json",
+				success: function(data) {
+					
+					let replyContent = $('#' + i);
+					
+					originalId = i;
+					originalForm = replyContent.html();
+					
+					let addHtml = `
+						<form action="../reply/doModify" method="post" onsubmit="replyWriteForm_onSubmit(this); return false;">
+							<input name="id" type="hidden" value="\${data.data.id}" />
+							<div class="mt-6 border border-gray-400 rounded-lg p-4">
+								<div class="mb-2"><span class="font-semibold">\${data.data.writerName}</span></div>
+								<textarea class="textarea textarea-bordered w-full" name="body" placeholder="댓글을 입력해보세요">\${data.data.body}</textarea>
+								<div class="flex justify-end mt-1">
+									<button onclick="replyModify_cancle(\${i});" class="btn-text-color btn btn-outline btn-xs mr-2">취소</button>
+									<button class="btn-text-color btn btn-outline btn-xs">작성</button>
+								</div>
+							</div>
+						</form>
+					`;
+					
+					replyContent.empty().html("");
+					replyContent.append(addHtml);
+				},
+				error: function(xhr, status, error) {
+					console.error("ERROR : " + status + " - " + error);
+				}
+			})
+		}
+		
+		const replyModify_cancle = function(i){
+			let replyContent = $('#' + i);
+			
+			replyContent.html(originalForm);
+			
+			originalId = null;
+			originalForm = null;
+		}
 	</script>
 	
 	<section class="my-5 text-base">
 		<div class="container mx-auto px-3">
 			<h2 class="text-lg">댓글</h2>
-			
-			<c:forEach var="reply" items="${replies }">
-				<div class="py-2 pl-16 border-bottom-line">
+			<c:forEach var="reply" items="${replies }" varStatus="status">
+				<div id="${status.count }" class="py-2 pl-16 border-bottom-line">
 					<div class="flex justify-between items-end">
 						<div class="font-semibold">${reply.writerName }</div>
 						<c:if test="${rq.getLoginedMemberId() == reply.memberId }">
@@ -142,7 +196,7 @@
 						    		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-5 h-5 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path></svg>
 						    	</button>
 								<ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-20">
-									<li><a>수정</a></li>
+									<li><a onclick="replyModify_getForm(${reply.id}, ${status.count });">수정</a></li>
 									<li><a href="../reply/doDelete?id=${reply.id }" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</a></li>
 								</ul>
 							</div>
