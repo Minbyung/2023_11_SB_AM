@@ -135,7 +135,7 @@ public class UsrArticleController {
 		
 		Member member = memberService.getMemberById(rq.getLoginedMemberId());
 		
-		model.addAttribute("nickname", member.getNickname());
+		model.addAttribute("member", member);
 		model.addAttribute("article", article);
 		model.addAttribute("replies", replies);
 		
