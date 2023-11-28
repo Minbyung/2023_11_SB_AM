@@ -7,9 +7,13 @@
     font-style: normal;
 }
 
-html > body {
+html > body, html > body .ProseMirror, html > body .toastui-editor-contents {
 	font-family: 'NanumSquareNeo-Variable', sans-serif;
 	text-underline-position: under;
+}
+
+html > body .ProseMirror, html > body .toastui-editor-contents {
+	font-size: 1.25rem;
 }
 
 .table-box-type > table {
