@@ -40,7 +40,9 @@
 						<tr>
 							<th>내용</th>
 							<td>
-								<div class="toast-ui-editor"></div>
+								<div class="toast-ui-editor">
+									<script type="text/x-template"></script>
+								</div>
 							</td>
 						</tr>
 						<tr>

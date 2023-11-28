@@ -5,11 +5,13 @@
 	<c:set var="pageTitle" value="ARTICLE MODIFY" />
 	
 	<%@ include file="../common/head.jsp" %>
+	<%@ include file="../common/toastUiEditorLib.jsp" %>
 	
 	<section class="mt-8 text-xl">
 		<div class="container mx-auto px-3">
-			<form action="doModify" method="post">
-				<input name="id" type="hidden" value="${article.id }"/>
+			<form action="doModify" method="post" onsubmit="submitForm(this); return false;">
+				<input name="id" type="hidden" value="${article.id }" />
+				<input name="body" type="hidden" />
 				<div class="table-box-type">
 					<table class="table table-lg">
 						<tr>
@@ -34,7 +36,11 @@
 						</tr>
 						<tr>
 							<th>내용</th>
-							<td><textarea class="textarea textarea-bordered textarea-primary w-9/12" name="body" placeholder="내용을 입력해주세요">${article.body }</textarea></td>
+							<td>
+								<div class="toast-ui-editor">
+									<script type="text/x-template">${article.body }</script>
+								</div>
+							</td>
 						</tr>
 						<tr>
 							<td class="text-center" colspan="2"><button class="btn-text-color btn btn-wide btn-outline">수정</button></td>
