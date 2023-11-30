@@ -1,7 +1,5 @@
 package com.koreaIT.demo.controller;
 
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,15 +7,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.koreaIT.demo.service.MemberService;
 import com.koreaIT.demo.util.Util;
-import com.koreaIT.demo.vo.Article;
 import com.koreaIT.demo.vo.Member;
-import com.koreaIT.demo.vo.Reply;
 import com.koreaIT.demo.vo.ResultData;
 import com.koreaIT.demo.vo.Rq;
-
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class UsrMemberController {
@@ -33,14 +25,31 @@ public class UsrMemberController {
 	@RequestMapping("/usr/member/join")
 	public String join() {
 		return "usr/member/join";
-	}	
+	}
+	
+	@RequestMapping("/usr/member/loginIdDupChk")
+	@ResponseBody
+	public ResultData loginIdDupChk(String loginId) {
+		
+		if (Util.empty(loginId)) {
+			return ResultData.from("F-1", "아이디를 입력해주세요");
+		}
+		
+		Member member = memberService.getMemberByLoginId(loginId);
+		
+		if (member != null) {
+			return ResultData.from("F-2", Util.f("%s은(는) 이미 사용중인 아이디입니다", loginId));
+		}
+		
+		return ResultData.from("S-1", Util.f("%s은(는) 사용 가능한 아이디입니다", loginId));
+	}
 	
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
 	public String doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNum, String email) {
 		
 		if (rq.getLoginedMemberId() != 0) {
-			return Util.jsHistoryBack("로그아웃후 이용해주세요");
+			return Util.jsHistoryBack("로그아웃 후 이용해주세요");
 		}
 		
 		if (Util.empty(loginId)) {
@@ -65,14 +74,12 @@ public class UsrMemberController {
 		Member member = memberService.getMemberByLoginId(loginId);
 		
 		if (member != null) {
-			return Util.jsHistoryBack("이미 사용중인 아이디입니다");
+			return Util.jsHistoryBack(Util.f("이미 사용중인 아이디(%s) 입니다", loginId));
 		}
 		
 		memberService.joinMember(loginId, loginPw, name, nickname, cellphoneNum, email);
 		
-		int id = memberService.getLastInsertId();
-		
-		return Util.jsReplace(Util.f("%d번님이 회원가입했습니다", id), "/");
+		return Util.jsReplace(Util.f("%s님의 가입이 완료되었습니다", name), "login");
 	}
 	
 	@RequestMapping("/usr/member/login")
@@ -203,8 +210,5 @@ public class UsrMemberController {
 		memberService.doPasswordModify(rq.getLoginedMemberId(), loginPw);
 		
 		return Util.jsReplace("비밀번호가 변경되었습니다", "myPage");
-	}	
+	}
 }
-
-
-

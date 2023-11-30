@@ -37,6 +37,4 @@ public class MemberService {
 	public void doPasswordModify(int id, String loginPw) {
 		memberDao.doPasswordModify(id, loginPw);
 	}
-
-
 }

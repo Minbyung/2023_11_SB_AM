@@ -25,6 +25,8 @@
 			
 			form.submit();
 		}
+
+		
 	</script>
 	
 	<section class="mt-8 text-xl">

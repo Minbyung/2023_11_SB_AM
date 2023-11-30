@@ -58,6 +58,4 @@ public interface MemberDao {
 				WHERE id = #{id}
 			""")
 	public void doPasswordModify(int id, String loginPw);
-
-	
 }
