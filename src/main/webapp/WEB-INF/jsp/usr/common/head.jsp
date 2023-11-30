@@ -33,6 +33,7 @@
 				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/usr/member/doLogout"><span>LOGOUT</span></a></li>
 			</c:if>
 			<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/usr/home/apiTest"><span>APITEST</span></a></li>
+			<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/usr/home/apiTest2"><span>APITEST2</span></a></li>
 		</ul>
 	</div>
 	
