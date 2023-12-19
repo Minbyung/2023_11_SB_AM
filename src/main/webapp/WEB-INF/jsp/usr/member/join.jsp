@@ -3,7 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 	<c:set var="pageTitle" value="MEMBER JOIN" />
-	
+	<link rel="stylesheet" href="/dist/style.css" />
+	<script src="/dist/script.js" defer="defer"></script>
 	<%@ include file="../common/head.jsp" %>
 	
 	<script>
@@ -160,8 +161,10 @@
 							<td class="text-center" colspan="2"><button class="btn-text-color btn btn-wide btn-outline">회원가입</button></td>
 						</tr>
 					</table>
+					
 				</div>
 			</form>
+			
 			
 			<div class="btns mt-2">
 				<button class="btn-text-color btn btn-outline btn-sm" onclick="history.back();">뒤로가기</button>
